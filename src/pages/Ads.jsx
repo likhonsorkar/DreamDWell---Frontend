@@ -49,13 +49,13 @@ const Ads = () => {
             {status == "success" && (
                 <main className="container mx-auto px-4 py-8 flex-grow">
                 <div className="flex justify-between items-center mb-8">
-                <h1 className="text-2xl font-black text-gray-800">
+                <h1 className="text-2xl font-black text-base-content">
                     Available <span className="text-orange-500">Ads Listings</span>
-                    <span className="ml-2 text-sm font-medium text-gray-400">({properties.count} results)</span>
+                    <span className="ml-2 text-sm font-medium text-base-content/40">({properties.count} results)</span>
                 </h1>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {properties.results.length == 0 && (<span>No Ads Found</span>)}
+                {properties.results.length == 0 && (<span className="text-base-content/60">No Ads Found</span>)}
                 {properties.results.map(item => (
                     <ListingCards key={item.id} data={item}/>
                 ))}

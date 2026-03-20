@@ -42,7 +42,7 @@ const ResetPassword = () => {
                             </div>
                             <button 
                                 disabled={loading}
-                                className="btn w-full h-14 bg-orange-600 hover:bg-orange-700 text-white border-none rounded-2xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-orange-200"
+                                className="btn w-full h-14 bg-black hover:bg-gray-800 text-white border-none rounded-2xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-gray-200"
                             >
                                 {loading ? <span className="loading loading-spinner"></span> : <><Send size={18} /> Send Reset Link</>}
                             </button>
@@ -58,7 +58,7 @@ const ResetPassword = () => {
                     </div>
                 )}
                 
-                <Link to="/login" className="flex items-center justify-center gap-2 mt-8 text-sm font-bold text-gray-400 hover:text-orange-600 transition-colors">
+                <Link to="/login" className="flex items-center justify-center gap-2 mt-8 text-sm font-bold text-gray-400 hover:text-black transition-colors">
                     <ArrowLeft size={16} /> Back to Login
                 </Link>
             </div>

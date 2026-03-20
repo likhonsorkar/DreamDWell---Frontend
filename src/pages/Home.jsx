@@ -14,12 +14,15 @@ const Home = () => {
         sublet: []
     });
     const [status, setStatus] = useState("wait");
-    const query = async() => {
-        try{
-            const allads = await apiClient.get("/ads/");
-            const family = await apiClient.get("/ads/?category=family");
-            const bachelor = await apiClient.get("/ads/?category=Bachelor");
-            const sublet = await  apiClient.get("/ads/?category=Sublet");
+    const query = async () => {
+        try {
+            const [allads, family, bachelor, sublet] = await Promise.all([
+                apiClient.get("/ads/"),
+                apiClient.get("/ads/?category=family"),
+                apiClient.get("/ads/?category=Bachelor"),
+                apiClient.get("/ads/?category=Sublet")
+            ]);
+
             setCategoriesData({
                 family: family.data.results.slice(0, 3),
                 bachelor: bachelor.data.results.slice(0, 3),
@@ -27,7 +30,7 @@ const Home = () => {
             });
             setRecentAds(allads.data.results.slice(0, 6));
             setStatus("success");
-        }catch(error){
+        } catch (error) {
             setStatus("error");
             console.log(error);
         }
@@ -47,8 +50,8 @@ const Home = () => {
                         <div className="container mx-auto px-4">
                             <div className="flex justify-between items-end mb-1">
                                 <div>
-                                    <h2 className="text-3xl font-black text-gray-900">Recent Ads</h2>
-                                    <p className="text-gray-500">Discover the latest listings added today</p>
+                                    <h2 className="text-3xl font-black text-base-content">Recent Ads</h2>
+                                    <p className="text-base-content/70">Discover the latest listings added today</p>
                                 </div>
                                 <button className="text-orange-600 font-bold hover:underline">View All</button>
                             </div>

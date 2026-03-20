@@ -7,8 +7,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     const navLinkClasses = ({ isActive }) => 
         `flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
             isActive 
-                ? "bg-orange-50 text-orange-600 font-bold" 
-                : "text-gray-500 hover:bg-orange-50 hover:text-orange-600 font-medium"
+                ? "bg-orange-500/10 text-orange-600 font-bold" 
+                : "text-base-content/70 hover:bg-orange-500/10 hover:text-orange-600 font-medium"
         }`;
     const handleClose = () => {
         if (window.innerWidth < 1024) {
@@ -17,15 +17,15 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     };
     return (
             <aside className={`
-            fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-gray-100 flex flex-col h-screen transition-transform duration-300 ease-in-out
+            fixed inset-y-0 left-0 z-50 w-72 bg-base-100 border-r border-base-200 flex flex-col h-screen transition-transform duration-300 ease-in-out
             lg:translate-x-0 lg:static lg:h-screen
             ${isOpen ? "translate-x-0" : "-translate-x-full"}
         `}>
                 <div className="p-8 flex items-center justify-between">
-                    <NavLink to="/" onClick={handleClose} className="text-xl font-black tracking-tighter text-gray-800">
+                    <NavLink to="/" onClick={handleClose} className="text-xl font-black tracking-tighter text-base-content">
                         HOUSEFOR<span className="text-orange-500">RENT</span>
                     </NavLink>
-                    <button onClick={() => setIsOpen(false)} className="lg:hidden p-2 text-gray-500">
+                    <button onClick={() => setIsOpen(false)} className="lg:hidden p-2 text-base-content/70">
                         <X size={20} />
                     </button>
                 </div>
@@ -67,8 +67,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                         </>
                     )}
                 </nav>
-                <div className="p-4 mt-auto border-t border-gray-100">
-                    <button onClick={()=> {logoutUser(); urlNavigator("/login");}} className="flex items-center gap-3 w-full px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl font-bold transition-all">
+                <div className="p-4 mt-auto border-t border-base-200">
+                    <button onClick={()=> {logoutUser(); urlNavigator("/login");}} className="flex items-center gap-3 w-full px-4 py-3 text-red-500 hover:bg-red-500/10 rounded-xl font-bold transition-all">
                         <LogOut size={20} />
                         Logout
                     </button>

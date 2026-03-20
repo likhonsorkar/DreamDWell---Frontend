@@ -27,21 +27,18 @@ const useAuth = () => {
      const fetchUserProfile = async() => {
         setErrorMSG("");
         try{
-            const response = await apiClient.get("/auth/users/me", {
-                headers : { Authorization : `JWT ${authTokens?.access}`},
-            });
+            const response = await apiClient.get("/auth/users/me");
             setUser(response.data);
         }catch (error){
-            setErrorMSG(error.response.data?.detail);
+            setErrorMSG(error.response?.data?.detail);
         }
     }
     const updateUserProfile = async(data) => {
         setSuccessMSG("")
         setErrorMSG("");
         try{
-            const response = await apiClient.put("/auth/users/me", data, {
-                headers : { Authorization : `JWT ${authTokens?.access}`}, });
-                setSuccessMSG("Profile Updated")
+            await apiClient.put("/auth/users/me", data);
+            setSuccessMSG("Profile Updated")
             return true;
         }catch (error){
             console.log(error);
@@ -53,14 +50,12 @@ const useAuth = () => {
         setSuccessMSG("")
         setErrorMSG("");
         try{
-            const response = await apiClient.post("auth/users/set_password/", data, {
-                headers : { Authorization : `JWT ${authTokens?.access}`}, });
-                setSuccessMSG("Password Changed Succesfull");
-                return true;
+            await apiClient.post("auth/users/set_password/", data);
+            setSuccessMSG("Password Changed Succesfull");
+            return true;
         }catch (error){
                 console.log(error);
-                console.log(error?.response);
-                const errMsg = Object.values(error.response.data).flat().join("\n");
+                const errMsg = error.response?.data ? Object.values(error.response.data).flat().join("\n") : "Server Error";
                 setErrorMSG(errMsg);
                 return false;
         }
@@ -79,7 +74,7 @@ const useAuth = () => {
                 setErrorMSG("Server error. Please try again later.");
                 return false;
             }
-             setErrorMSG(error.response.data?.detail);
+             setErrorMSG(error.response?.data?.detail);
              return false;
         }
     }
@@ -123,7 +118,7 @@ const useAuth = () => {
     }
     const emailActivation = async(data) => {
         try{
-            const response = await apiClient.post("/auth/users/activation/", data);
+            await apiClient.post("/auth/users/activation/", data);
             return true;
         }catch (error) {
             return false;
@@ -133,24 +128,19 @@ const useAuth = () => {
         setSuccessMSG("")
         setErrorMSG("");
         try{
-            const response = await apiClient.post("/ads/", data, {
-                headers : { Authorization : `JWT ${authTokens?.access}`}, });
-                setSuccessMSG("Property is added! please wait for admin approval. ");
-                return response;
+            const response = await apiClient.post("/ads/", data);
+            setSuccessMSG("Property is added! please wait for admin approval. ");
+            return response;
         }catch (error){
                 console.log(error);
-                console.log(error?.response);
-                const errMsg = Object.values(error.response.data).flat().join("\n");
+                const errMsg = error.response?.data ? Object.values(error.response.data).flat().join("\n") : "Server Error";
                 setErrorMSG(errMsg);
                 return null;
         }
     }
     const fetchMyAds = async () => {
         try {
-            const response = await apiClient.get("/myads", {
-                headers: { 'Authorization': `JWT ${authTokens?.access}` },
-            });
-            return response;
+            return await apiClient.get("/myads");
         } catch (error) {
             console.error("Fetch My Ads Error:", error);
             return null;
@@ -158,9 +148,7 @@ const useAuth = () => {
     }
     const getAdDetails = async (adId) => {
         try {
-            const headers = authTokens?.access ? { 'Authorization': `JWT ${authTokens?.access}` } : {};
-            const response = await apiClient.get(`/ads/${adId}/`, { headers });
-            return response;
+            return await apiClient.get(`/ads/${adId}/`);
         } catch (error) {
             console.error("Fetch Ad Details Error:", error);
             return null;
@@ -168,9 +156,7 @@ const useAuth = () => {
     }
     const getAdImages = async (adId) => {
         try {
-            const headers = authTokens?.access ? { 'Authorization': `JWT ${authTokens?.access}` } : {};
-            const response = await apiClient.get(`/ads/${adId}/images/`, { headers });
-            return response;
+            return await apiClient.get(`/ads/${adId}/images/`);
         } catch (error) {
             console.error("Fetch Ad Images Error:", error);
             return null;
@@ -180,35 +166,33 @@ const useAuth = () => {
         setSuccessMSG("")
         setErrorMSG("");
         try{
-            const response = await apiClient.put(`/ads/${adId}/`, data, {
-                headers : { Authorization : `JWT ${authTokens?.access}`}, });
-                setSuccessMSG("Property updated successfully!");
-                return response;
+            const response = await apiClient.put(`/ads/${adId}/`, data);
+            setSuccessMSG("Property updated successfully!");
+            return response;
         }catch (error){
                 console.log(error);
-                console.log(error?.response);
-                const errMsg = Object.values(error.response.data).flat().join("\n");
+                const errMsg = error.response?.data ? Object.values(error.response.data).flat().join("\n") : "Server Error";
                 setErrorMSG(errMsg);
                 return null;
         }
     }
    const AddAdsImage = async (data, adsId) => {
-        let lastResponse = null;
         try {
-            for (const image of data) {
+            const uploadPromises = data.map(image => {
                 const formData = new FormData();
                 formData.append("image", image);
-                lastResponse = await apiClient.post(`/ads/${adsId}/images/`, formData, {
+                return apiClient.post(`/ads/${adsId}/images/`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
-                        'Authorization': `JWT ${authTokens?.access}`,
                     },
                 });
-            }
+            });
+            const responses = await Promise.all(uploadPromises);
             setSuccessMSG("All images uploaded successfully!");
-            return lastResponse; 
+            return responses[responses.length - 1]; 
         } catch (error) {
             console.error("Upload Error:", error.response?.data || error.message);
+            setErrorMSG("Failed to upload some images.");
             throw error;
         }
     };
@@ -216,9 +200,7 @@ const useAuth = () => {
         setSuccessMSG("");
         setErrorMSG("");
         try {
-            await apiClient.delete(`/ads/${adId}/images/${imageId}/`, {
-                headers: { Authorization: `JWT ${authTokens?.access}` },
-            });
+            await apiClient.delete(`/ads/${adId}/images/${imageId}/`);
             setSuccessMSG("Image deleted successfully!");
             return true;
         } catch (error) {
@@ -230,9 +212,7 @@ const useAuth = () => {
 
     const getReviews = async (adId) => {
         try {
-            const headers = authTokens?.access ? { 'Authorization': `JWT ${authTokens?.access}` } : {};
-            const response = await apiClient.get(`/ads/${adId}/reviews/`, { headers });
-            return response;
+            return await apiClient.get(`/ads/${adId}/reviews/`);
         } catch (error) {
             console.error("Fetch Reviews Error:", error);
             return null;
@@ -240,9 +220,7 @@ const useAuth = () => {
     }
     const addReview = async (adId, data) => {
         try {
-            const response = await apiClient.post(`/ads/${adId}/reviews/`, data, {
-                headers: { Authorization: `JWT ${authTokens?.access}` },
-            });
+            const response = await apiClient.post(`/ads/${adId}/reviews/`, data);
             setSuccessMSG("Review added successfully!");
             return response;
         } catch (error) {
@@ -256,9 +234,7 @@ const useAuth = () => {
         setSuccessMSG("");
         setErrorMSG("");
         try {
-            const response = await apiClient.post(`/ads/${adId}/requests/`, {}, {
-                headers: { Authorization: `JWT ${authTokens?.access}` },
-            });
+            const response = await apiClient.post(`/ads/${adId}/requests//`, {});
             setSuccessMSG("Rental request sent successfully!");
             return response;
         } catch (error) {
@@ -270,10 +246,7 @@ const useAuth = () => {
     }
     const getAdRequests = async (adId) => {
         try {
-            const response = await apiClient.get(`/ads/${adId}/requests/`, {
-                headers: { Authorization: `JWT ${authTokens?.access}` },
-            });
-            return response;
+            return await apiClient.get(`/ads/${adId}/requests/`);
         } catch (error) {
             console.error("Fetch Ad Requests Error:", error);
             return null;
@@ -283,9 +256,7 @@ const useAuth = () => {
         setSuccessMSG("");
         setErrorMSG("");
         try {
-            const response = await apiClient.post(`/ads/${adId}/requests/${requestId}/accept/`, {}, {
-                headers: { Authorization: `JWT ${authTokens?.access}` },
-            });
+            const response = await apiClient.post(`/ads/${adId}/requests/${requestId}/accept/`, {});
             setSuccessMSG("Rental request accepted successfully!");
             return response;
         } catch (error) {
@@ -299,9 +270,7 @@ const useAuth = () => {
         setSuccessMSG("");
         setErrorMSG("");
         try {
-            await apiClient.delete(`/ads/${adId}/requests/${requestId}/`, {
-                headers: { Authorization: `JWT ${authTokens?.access}` },
-            });
+            await apiClient.delete(`/ads/${adId}/requests/${requestId}/`);
             setSuccessMSG("Rental request cancelled/rejected successfully!");
             return true;
         } catch (error) {
@@ -313,8 +282,7 @@ const useAuth = () => {
     }
     const getUserProfile = async (userId) => {
         try {
-            const response = await apiClient.get(`/profile/${userId}/`);
-            return response;
+            return await apiClient.get(`/profile/${userId}/`);
         } catch (error) {
             console.error("Fetch User Profile Error:", error);
             return null;
