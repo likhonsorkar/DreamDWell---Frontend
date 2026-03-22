@@ -1,84 +1,70 @@
 import React, { useEffect, useState } from 'react';
-import { Mail, Phone, MapPin, UserCircle, Search, Eye, X, ShieldCheck } from 'lucide-react';
-import useAuthContext from '../../hooks/useAuthContext';
+import { Mail, Phone, MapPin, UserCircle, X, Eye } from 'lucide-react';
 import apiClient from '../../services/api-client';
 import { useOutletContext } from 'react-router';
+import { useQuery } from '@tanstack/react-query';
+import { UserTableSkeleton } from '../../components/dashboard/DashboardSkeletons';
 
 const UserList = () => {
-    const { authTokens } = useAuthContext();
-    const { setHeading, setLoading, loading } = useOutletContext();
-    const [users, setUsers] = useState([]);
+    const { setHeading } = useOutletContext();
     const [selectedUser, setSelectedUser] = useState(null); 
 
     useEffect(() => {
-        const title = "User List"
+        const title = "User List";
         document.title = title;
         setHeading(title);
-        fetchUsers();
-    }, []);
+    }, [setHeading]);
 
-    const fetchUsers = async () => {
-        setLoading(true);
-        try {
-            const response = await apiClient.get("/dashboard/profile/", {
-                headers: { Authorization: `JWT ${authTokens?.access}` },
-            });
-            setUsers(response.data);
-        } catch (error) {
-            console.error("User fetch error", error);
-        } finally {
-            setLoading(false);
+    const { data: users = [], isLoading, status } = useQuery({
+        queryKey: ['user-list'],
+        queryFn: async () => {
+            const response = await apiClient.get("/dashboard/profile/");
+            return response.data.results;
         }
-    };
+    });
 
     return (
-        <div className="max-w-7xl mx-auto p-4">
-            <div className="bg-white rounded-[2.5rem] shadow-xl shadow-gray-100 border border-gray-100 overflow-hidden">
+        <div className="max-w-7xl mx-auto p-4 md:p-0">
+            <div className="bg-base-100 rounded-[2.5rem] shadow-xl shadow-base-200 border border-base-200 overflow-hidden transition-all duration-500">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
-                            <tr className="bg-gray-50/50 border-b border-gray-100">
-                                <th className="p-6 text-sm font-bold text-gray-400 uppercase tracking-widest">User Profile</th>
-                                <th className="p-6 text-sm font-bold text-gray-400 uppercase tracking-widest">Contact</th>
-                                <th className="p-6 text-sm font-bold text-gray-400 uppercase tracking-widest">Location</th>
-                                <th className="p-6 text-sm font-bold text-gray-400 uppercase tracking-widest text-center">Actions</th>
+                            <tr className="bg-base-200/50 border-b border-base-200">
+                                <th className="p-6 text-sm font-bold text-base-content/40 uppercase tracking-[0.2em]">User Profile</th>
+                                <th className="p-6 text-sm font-bold text-base-content/40 uppercase tracking-[0.2em]">Contact</th>
+                                <th className="p-6 text-sm font-bold text-base-content/40 uppercase tracking-[0.2em]">Location</th>
+                                <th className="p-6 text-sm font-bold text-base-content/40 uppercase tracking-[0.2em] text-center">Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-50">
-                            {loading ? (
-                                <tr>
-                                    <td colSpan="4" className="p-20 text-center text-orange-500">
-                                        <span className="loading loading-bars loading-lg"></span>
-                                    </td>
-                                </tr>
-                            ) : users.map((u) => (
-                                <tr key={u.id} className="hover:bg-gray-50/30 transition-all group">
+                        <tbody className="divide-y divide-base-200">
+                            {status === "success" && users.map((u) => (
+                                <tr key={u.id} className="hover:bg-base-200/30 transition-all group">
                                     <td className="p-6">
                                         <div className="flex items-center gap-4">
                                             {u.profile_image ? (
-                                                <img src={u.profile_image} className="w-12 h-12 rounded-xl object-cover" alt="User" />
+                                                <img src={u.profile_image} className="w-12 h-12 rounded-xl object-cover ring-2 ring-primary/10" alt="User" />
                                             ) : (
-                                                <div className="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-orange-400">
+                                                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary ring-2 ring-primary/5">
                                                     <UserCircle size={24} />
                                                 </div>
                                             )}
                                             <div>
-                                                <div className="font-black text-gray-800 tracking-tight">{u.first_name} {u.last_name}</div>
-                                                <div className="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-md w-fit font-bold uppercase mt-1">ID: #{u.id}</div>
+                                                <div className="font-black text-base-content tracking-tight text-lg">{u.first_name} {u.last_name}</div>
+                                                <div className="text-[10px] bg-base-200 text-base-content/50 px-2 py-0.5 rounded-md w-fit font-black uppercase mt-1 tracking-widest">ID: #{u.id}</div>
                                             </div>
                                         </div>
                                     </td>
                                     <td className="p-6 text-sm">
-                                        <div className="flex items-center gap-2 text-gray-600 font-medium mb-1">
-                                            <Mail size={14} className="text-gray-400" /> {u.email}
+                                        <div className="flex items-center gap-2 text-base-content/70 font-bold mb-1">
+                                            <Mail size={14} className="text-primary" /> {u.email}
                                         </div>
-                                        <div className="flex items-center gap-2 text-gray-400">
+                                        <div className="flex items-center gap-2 text-base-content/40 font-medium">
                                             <Phone size={14} /> {u.phone || "No phone"}
                                         </div>
                                     </td>
                                     <td className="p-6">
-                                        <div className="text-sm text-gray-600 font-medium truncate max-w-[200px]">
-                                            <MapPin size={14} className="inline mr-1 text-orange-400" />
+                                        <div className="text-sm text-base-content/60 font-bold truncate max-w-[200px]">
+                                            <MapPin size={14} className="inline mr-1 text-primary" />
                                             {u.address || "Address not provided"}
                                         </div>
                                     </td>
@@ -86,7 +72,7 @@ const UserList = () => {
                                         <div className="flex justify-center">
                                             <button 
                                                 onClick={() => setSelectedUser(u)}
-                                                className="bg-orange-50 text-orange-600 p-3 rounded-2xl hover:bg-orange-600 hover:text-white transition-all active:scale-95"
+                                                className="bg-primary/10 text-primary p-4 rounded-2xl hover:bg-primary hover:text-white transition-all active:scale-90 shadow-lg shadow-primary/5"
                                             >
                                                 <Eye size={18} />
                                             </button>
@@ -97,47 +83,50 @@ const UserList = () => {
                         </tbody>
                     </table>
                 </div>
+                {isLoading && <UserTableSkeleton />}
             </div>
             {selectedUser && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
-                    <div className="bg-white rounded-[3rem] max-w-lg w-full p-8 relative shadow-2xl animate-in zoom-in duration-300">
+                    <div className="bg-base-100 rounded-[3rem] max-w-lg w-full p-10 relative shadow-2xl animate-in zoom-in duration-300 border border-white/10">
                         <button 
                             onClick={() => setSelectedUser(null)}
-                            className="absolute top-6 right-6 p-2 hover:bg-gray-100 rounded-full transition-all text-gray-400"
+                            className="absolute top-8 right-8 p-2 hover:bg-base-200 rounded-full transition-all text-base-content/40"
                         >
                             <X size={24} />
                         </button>
                         <div className="text-center">
                             {selectedUser.profile_image ? (
-                                <img src={selectedUser.profile_image} className="w-24 h-24 rounded-[2rem] mx-auto object-cover border-4 border-orange-50 mb-4" alt="Profile" />
+                                <img src={selectedUser.profile_image} className="w-28 h-24 rounded-[2rem] mx-auto object-cover border-4 border-primary/20 mb-6 shadow-xl" alt="Profile" />
                             ) : (
-                                <div className="w-24 h-24 rounded-[2rem] bg-gray-100 mx-auto flex items-center justify-center text-gray-400 mb-4">
+                                <div className="w-24 h-24 rounded-[2rem] bg-base-200 mx-auto flex items-center justify-center text-base-content/20 mb-6">
                                     <UserCircle size={48} />
                                 </div>
                             )}
-                            <h3 className="text-2xl font-black text-gray-800">{selectedUser.first_name} {selectedUser.last_name}</h3>
-                            <p className="text-orange-500 font-bold text-xs uppercase tracking-widest mt-1 italic">{selectedUser.bio || "Active Member"}</p>
-                            <hr className="my-6 border-gray-100" />
+                            <h3 className="text-3xl font-black text-base-content tracking-tighter">{selectedUser.first_name} {selectedUser.last_name}</h3>
+                            <p className="text-primary font-black text-xs uppercase tracking-[0.2em] mt-2 opacity-80">{selectedUser.bio || "Active Member"}</p>
+                            
+                            <div className="divider my-8 opacity-50"></div>
+                            
                             <div className="space-y-4 text-left">
-                                <div className="flex items-center gap-4 bg-gray-50 p-4 rounded-2xl">
-                                    <div className="bg-white p-2 rounded-xl text-gray-400 shadow-sm"><Mail size={20} /></div>
+                                <div className="flex items-center gap-4 bg-base-200/50 p-5 rounded-3xl border border-base-200">
+                                    <div className="bg-base-100 p-3 rounded-2xl text-primary shadow-sm ring-1 ring-base-200"><Mail size={20} /></div>
                                     <div>
-                                        <span className="text-[10px] font-bold text-gray-400 uppercase block">Email Address</span>
-                                        <span className="text-gray-700 font-bold">{selectedUser.email}</span>
+                                        <span className="text-[10px] font-black text-base-content/30 uppercase tracking-widest block mb-0.5">Email Address</span>
+                                        <span className="text-base-content font-black">{selectedUser.email}</span>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-4 bg-gray-50 p-4 rounded-2xl">
-                                    <div className="bg-white p-2 rounded-xl text-gray-400 shadow-sm"><Phone size={20} /></div>
+                                <div className="flex items-center gap-4 bg-base-200/50 p-5 rounded-3xl border border-base-200">
+                                    <div className="bg-base-100 p-3 rounded-2xl text-primary shadow-sm ring-1 ring-base-200"><Phone size={20} /></div>
                                     <div>
-                                        <span className="text-[10px] font-bold text-gray-400 uppercase block">Phone Number</span>
-                                        <span className="text-gray-700 font-bold">{selectedUser.phone || "N/A"}</span>
+                                        <span className="text-[10px] font-black text-base-content/30 uppercase tracking-widest block mb-0.5">Phone Number</span>
+                                        <span className="text-base-content font-black">{selectedUser.phone || "Not Provided"}</span>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-4 bg-gray-50 p-4 rounded-2xl">
-                                    <div className="bg-white p-2 rounded-xl text-gray-400 shadow-sm"><MapPin size={20} /></div>
+                                <div className="flex items-center gap-4 bg-base-200/50 p-5 rounded-3xl border border-base-200">
+                                    <div className="bg-base-100 p-3 rounded-2xl text-primary shadow-sm ring-1 ring-base-200"><MapPin size={20} /></div>
                                     <div>
-                                        <span className="text-[10px] font-bold text-gray-400 uppercase block">Full Address</span>
-                                        <span className="text-gray-700 font-bold text-sm leading-tight inline-block">{selectedUser.address || "No address on file"}</span>
+                                        <span className="text-[10px] font-black text-base-content/30 uppercase tracking-widest block mb-0.5">Full Address</span>
+                                        <span className="text-base-content font-black text-sm leading-tight">{selectedUser.address || "No address details found"}</span>
                                     </div>
                                 </div>
                             </div>

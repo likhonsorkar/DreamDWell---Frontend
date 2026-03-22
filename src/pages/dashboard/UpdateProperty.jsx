@@ -64,7 +64,7 @@ const UpdateProperty = () => {
         }
     };
     if (loading && !adsDetail) {
-        return <div className='text-center m-2'><span className="loading loading-bars loading-xl text-orange-500"></span></div>;
+        return <div className='text-center m-2'><span className="loading loading-bars loading-xl text-primary"></span></div>;
     }
     if (!adsDetail && !loading) {
         return <div className="text-center p-8">Property Not Found</div>;
@@ -75,7 +75,7 @@ const UpdateProperty = () => {
                 <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-xl shadow-gray-100 border border-gray-100">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="md:col-span-2 border-b border-gray-100 pb-4 mb-4 flex items-center gap-3">
-                        <FilePen className="text-orange-500" size={28}/>
+                        <FilePen className="text-primary" size={28}/>
                         <h3 className="text-2xl font-black text-gray-800">Update Property Information</h3>
                     </div>
                     <div className="md:col-span-2">
@@ -135,7 +135,7 @@ const UpdateProperty = () => {
                     </div>
 
                     <div className="md:col-span-2 border-b border-gray-100 pb-4 my-4 flex items-center gap-3">
-                        <Home className="text-orange-500" size={28}/>
+                        <Home className="text-primary" size={28}/>
                         <h3 className="text-2xl font-black text-gray-800">Apartment Details</h3>
                     </div>
                     <div className="grid grid-cols-3 gap-4 md:col-span-2">
@@ -165,7 +165,7 @@ const UpdateProperty = () => {
                         <input {...register("address", { required: "Address is required" })} className="input input-bordered w-full rounded-2xl bg-gray-50 border-gray-100" />
                     </div>
                     <div className="md:col-span-2 border-b border-gray-100 pb-4 my-4 flex items-center gap-3">
-                        <Phone className="text-orange-500" size={28}/>
+                        <Phone className="text-primary" size={28}/>
                         <h3 className="text-2xl font-black text-gray-800">Contact Information</h3>
                     </div>
                     <div>
@@ -180,7 +180,7 @@ const UpdateProperty = () => {
                 <div className="mt-8">
                     <button 
                         type="submit" 
-                        className="btn bg-orange-500 hover:bg-orange-600 border-none text-white w-full h-14 rounded-2xl text-lg font-bold shadow-xl shadow-orange-100 transition-all active:scale-95"
+                        className="btn bg-primary hover:bg-primary border-none text-white w-full h-14 rounded-2xl text-lg font-bold shadow-xl shadow-primary transition-all active:scale-95"
                     >
                         Update Listing
                     </button>
@@ -191,3 +191,4 @@ const UpdateProperty = () => {
     );
 };
 export default UpdateProperty;
+

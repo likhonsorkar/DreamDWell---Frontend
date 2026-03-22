@@ -16,7 +16,7 @@ const Review = ({ reviews, adId, setReviews }) => {
     };
     return (
         <div className="mt-8">
-            <h2 className="text-2xl font-bold text-gray-800 border-l-4 border-orange-500 pl-4 mb-6">Reviews</h2>
+            <h2 className="text-2xl font-bold text-gray-800 border-l-4 border-primary pl-4 mb-6">Reviews</h2>
             {reviews?.length === 0 ? (
                 <p className="text-gray-600">No reviews yet. Be the first to leave one!</p>
             ) : (
@@ -35,10 +35,10 @@ const Review = ({ reviews, adId, setReviews }) => {
                                         <img 
                                             src={profileImage} 
                                             alt={fullName} 
-                                            className="w-10 h-10 rounded-full object-cover mr-3 border border-orange-100"
+                                            className="w-10 h-10 rounded-full object-cover mr-3 border border-primary"
                                         />
                                     ) : (
-                                        <div className="w-10 h-10 bg-orange-200 rounded-full flex items-center justify-center text-orange-800 font-bold text-lg mr-3">
+                                        <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-primary font-bold text-lg mr-3">
                                             {initial}
                                         </div>
                                     )}
@@ -50,7 +50,7 @@ const Review = ({ reviews, adId, setReviews }) => {
                                             key={i}
                                             type="radio"
                                             name={`rating-${review.id}`}
-                                            className="mask mask-star-2 bg-orange-400"
+                                            className="mask mask-star-2 bg-primary"
                                             checked={review.rating === i + 1}
                                             readOnly
                                         />
@@ -79,3 +79,4 @@ const Review = ({ reviews, adId, setReviews }) => {
 };
 
 export default Review;
+

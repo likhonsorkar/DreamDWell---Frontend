@@ -32,7 +32,7 @@ const PasswordResetConfirm = lazy(() => import("../pages/PasswordResetConfirm"))
 
 const FullPageLoader = () => (
     <div className="min-h-[70vh] flex flex-col items-center justify-center gap-4">
-        <span className="loading loading-bars loading-lg text-orange-500"></span>
+        <span className="loading loading-bars loading-lg text-primary"></span>
         <p className="text-base-content/60 font-medium animate-pulse">Loading experience...</p>
     </div>
 );
@@ -76,3 +76,4 @@ const MyAppRoute = () => {
 };
 
 export default MyAppRoute;
+

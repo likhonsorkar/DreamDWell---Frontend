@@ -28,7 +28,7 @@ const DashboardLayout = () => {
                     <div>
                         <h1 className="text-3xl md:text-4xl font-black text-base-content tracking-tight flex items-center gap-3">
                             Dashboard 
-                            <span className="text-orange-500 bg-orange-500/10 px-4 py-1 rounded-2xl text-2xl md:text-3xl">
+                            <span className="text-primary bg-primary/10 px-4 py-1 rounded-2xl text-2xl md:text-3xl">
                                 {heading}
                             </span>
                         </h1>
@@ -37,7 +37,7 @@ const DashboardLayout = () => {
                         </p>
                     </div>
                     <div className="flex items-center gap-4">
-                        <Link to="/dashboard/addproperty" className="btn bg-orange-500 hover:bg-orange-600 border-none text-white rounded-2xl px-8 shadow-xl shadow-orange-500/20 font-bold transition-all transform hover:scale-105 inline-flex items-center gap-2">
+                        <Link to="/dashboard/addproperty" className="btn bg-primary hover:bg-primary border-none text-white rounded-2xl px-8 shadow-xl shadow-primary/20 font-bold transition-all transform hover:scale-105 inline-flex items-center gap-2">
                             <Plus size={20} /> Add Property
                         </Link>
                     </div>
@@ -68,3 +68,4 @@ const DashboardLayout = () => {
     );
 };
 export default DashboardLayout;
+

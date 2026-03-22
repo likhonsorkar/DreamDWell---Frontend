@@ -7,8 +7,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     const navLinkClasses = ({ isActive }) => 
         `flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
             isActive 
-                ? "bg-orange-500/10 text-orange-600 font-bold" 
-                : "text-base-content/70 hover:bg-orange-500/10 hover:text-orange-600 font-medium"
+                ? "bg-primary/10 text-primary font-bold" 
+                : "text-base-content/70 hover:bg-primary/10 hover:text-primary font-medium"
         }`;
     const handleClose = () => {
         if (window.innerWidth < 1024) {
@@ -23,7 +23,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         `}>
                 <div className="p-8 flex items-center justify-between">
                     <NavLink to="/" onClick={handleClose} className="text-xl font-black tracking-tighter text-base-content">
-                        HOUSEFOR<span className="text-orange-500">RENT</span>
+                        HOUSEFOR<span className="text-primary">RENT</span>
                     </NavLink>
                     <button onClick={() => setIsOpen(false)} className="lg:hidden p-2 text-base-content/70">
                         <X size={20} />
@@ -77,3 +77,4 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     );
 };
 export default Sidebar;
+

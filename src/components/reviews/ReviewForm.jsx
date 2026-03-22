@@ -56,7 +56,7 @@ const ReviewForm = ({ adId, setReviews }) => {
                                 key={i}
                                 type="radio"
                                 name="rating-radio"
-                                className="mask mask-star-2 bg-orange-400"
+                                className="mask mask-star-2 bg-primary"
                                 checked={rating === i + 1}
                                 onChange={() => setRating(i + 1)}
                             />
@@ -69,7 +69,7 @@ const ReviewForm = ({ adId, setReviews }) => {
                     </label>
                     <textarea
                         id="comment"
-                        className="textarea textarea-bordered w-full h-24 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                        className="textarea textarea-bordered w-full h-24 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                         placeholder="Share your thoughts about this property..."
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
@@ -78,7 +78,7 @@ const ReviewForm = ({ adId, setReviews }) => {
                 </div>
                 <button
                     type="submit"
-                    className="btn bg-orange-500 hover:bg-orange-600 border-none text-white w-full rounded-lg"
+                    className="btn bg-primary hover:bg-primary border-none text-white w-full rounded-lg"
                     disabled={loading}
                 >
                     {loading ? (
@@ -93,3 +93,4 @@ const ReviewForm = ({ adId, setReviews }) => {
 };
 
 export default ReviewForm;
+

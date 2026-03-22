@@ -15,7 +15,7 @@ const PaymentCancel = () => {
                     <Link to="/dashboard/invoice" className="bg-gray-900 text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-black transition-all shadow-xl">
                         Back to Billing
                     </Link>
-                    <Link to="/" className="flex items-center justify-center gap-2 text-sm font-bold text-gray-400 hover:text-orange-600 transition-colors">
+                    <Link to="/" className="flex items-center justify-center gap-2 text-sm font-bold text-gray-400 hover:text-primary transition-colors">
                         <Home size={16} /> Go to Home
                     </Link>
                 </div>
@@ -25,3 +25,4 @@ const PaymentCancel = () => {
 };
 
 export default PaymentCancel;
+

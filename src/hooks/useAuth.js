@@ -234,7 +234,7 @@ const useAuth = () => {
         setSuccessMSG("");
         setErrorMSG("");
         try {
-            const response = await apiClient.post(`/ads/${adId}/requests//`, {});
+            const response = await apiClient.post(`/ads/${adId}/requests/`, {});
             setSuccessMSG("Rental request sent successfully!");
             return response;
         } catch (error) {
