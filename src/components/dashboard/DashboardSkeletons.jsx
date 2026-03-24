@@ -1,3 +1,40 @@
+export const SidebarSkeleton = () => {
+    return (
+        <div className="flex flex-col h-full p-8 space-y-8 animate-pulse">
+            <div className="flex items-center gap-3">
+                <div className="skeleton w-10 h-10 rounded-xl"></div>
+                <div className="skeleton h-8 w-32"></div>
+            </div>
+            <div className="space-y-4 flex-1">
+                <div className="skeleton h-4 w-20 mb-6"></div>
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                    <div key={i} className="skeleton h-12 w-full rounded-xl"></div>
+                ))}
+            </div>
+            <div className="pt-8 border-t border-base-200 space-y-4">
+                <div className="skeleton h-12 w-full rounded-xl"></div>
+                <div className="skeleton h-12 w-full rounded-xl"></div>
+            </div>
+        </div>
+    );
+};
+
+export const HeaderSkeleton = () => {
+    return (
+        <div className="flex items-center justify-between gap-4 animate-pulse">
+            <div className="flex items-center gap-4">
+                <div className="lg:hidden skeleton w-10 h-10 rounded-xl"></div>
+                <div className="skeleton h-8 w-48 md:w-64"></div>
+            </div>
+            <div className="flex items-center gap-4">
+                <div className="hidden md:block skeleton h-10 w-64 rounded-xl"></div>
+                <div className="skeleton h-10 w-10 rounded-xl"></div>
+                <div className="skeleton h-10 w-32 md:w-40 rounded-xl"></div>
+            </div>
+        </div>
+    );
+};
+
 export const StatsSkeleton = () => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">

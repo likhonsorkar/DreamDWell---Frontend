@@ -27,7 +27,7 @@ const useAuth = () => {
      const fetchUserProfile = async() => {
         setErrorMSG("");
         try{
-            const response = await apiClient.get("/auth/users/me");
+            const response = await apiClient.get("/auth/users/me/");
             setUser(response.data);
         }catch (error){
             setErrorMSG(error.response?.data?.detail);

@@ -2,12 +2,14 @@ import useAuthContext from "../../hooks/useAuthContext";
 import apiClient from "../../services/api-client";
 const Review = ({ reviews, adId, setReviews }) => {
     const { user, authTokens } = useAuthContext();
+    const reviewsList = Array.isArray(reviews) ? reviews : (reviews?.results || []);
+
     const handleDelete = async (reviewId) => {
         try {
             await apiClient.delete(`/ads/${adId}/reviews/${reviewId}/`, {
                 headers: { Authorization: `JWT ${authTokens?.access}` },
             });
-            const updatedReviews = reviews.filter((review) => review.id !== reviewId);
+            const updatedReviews = reviewsList.filter((review) => review.id !== reviewId);
             setReviews(updatedReviews);
             alert("Review deleted successfully");
         } catch (error) {
@@ -17,11 +19,11 @@ const Review = ({ reviews, adId, setReviews }) => {
     return (
         <div className="mt-8">
             <h2 className="text-2xl font-bold text-gray-800 border-l-4 border-primary pl-4 mb-6">Reviews</h2>
-            {reviews?.length === 0 ? (
+            {reviewsList.length === 0 ? (
                 <p className="text-gray-600">No reviews yet. Be the first to leave one!</p>
             ) : (
                 <div className="space-y-6">
-                    {reviews?.map((review) => {
+                    {reviewsList.map((review) => {
                         const userProfile = review.user;
                         const firstName = userProfile?.first_name || "";
                         const lastName = userProfile?.last_name || "";

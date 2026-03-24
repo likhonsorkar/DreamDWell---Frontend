@@ -26,8 +26,8 @@ const AdsDetails = () => {
 
             return {
                 properties: detailsRes.data,
-                images: imagesRes?.data || [],
-                reviews: reviewsRes?.data || []
+                images: imagesRes?.data?.results || [],
+                reviews: reviewsRes?.data?.results || []
             };
         },
         enabled: !!id

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-    baseURL: "https://dreamdwell-backend-63hh.onrender.com/api",
+    baseURL: "https://dream-d-well-backend.vercel.app/api",
 });
 apiClient.interceptors.request.use(
     (config) => {
