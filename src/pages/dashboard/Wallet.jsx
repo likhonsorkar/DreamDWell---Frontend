@@ -20,7 +20,7 @@ const WalletDashboard = () => {
         queryFn: async () => {
             const response = await apiClient.get("/wallet/");
             console.log(response);
-            return response.data.results;
+            return response.data.results[0];
         }
     });
 
@@ -56,7 +56,7 @@ const WalletDashboard = () => {
                                 Withdraw Funds
                             </button>
                             <div className="text-slate-500 text-[10px] font-black uppercase tracking-widest leading-relaxed">
-                                Last updated: <br/> {new Date(wallet?.updated_at).toLocaleString()}
+                                Last updated: <br/> {wallet?.updated_at ? new Date(wallet.updated_at).toLocaleString() : 'N/A'}
                             </div>
                         </div>
                     </div>
@@ -98,20 +98,20 @@ const WalletDashboard = () => {
                                         <tr key={idx} className="group hover:bg-base-200/30 transition-all">
                                             <td className="p-6">
                                                 <div className="flex items-center gap-4">
-                                                    <div className={`p-3 rounded-2xl ${tx.type === 'credit' ? 'bg-success/10 text-success' : 'bg-error/10 text-error'} ring-1 ring-current/10`}>
-                                                        {tx.type === 'credit' ? <ArrowDownLeft size={20} /> : <ArrowUpRight size={20} />}
+                                                    <div className={`p-3 rounded-2xl ${tx.transaction_type === 'credit' ? 'bg-success/10 text-success' : 'bg-error/10 text-error'} ring-1 ring-current/10`}>
+                                                        {tx.transaction_type === 'credit' ? <ArrowDownLeft size={20} /> : <ArrowUpRight size={20} />}
                                                     </div>
                                                     <div>
-                                                        <div className="font-black text-base-content uppercase text-sm tracking-tight">{tx.type}</div>
-                                                        <div className="text-[10px] text-base-content/30 font-black uppercase tracking-widest">Successful Transfer</div>
+                                                        <div className="font-black text-base-content uppercase text-sm tracking-tight">{tx.transaction_type}</div>
+                                                        <div className="text-[10px] text-base-content/30 font-black uppercase tracking-widest">{tx.transaction_id} • {new Date(tx.created_at).toLocaleDateString()}</div>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td className="p-6">
                                                 <span className="px-3 py-1 bg-base-200 text-base-content/40 text-[10px] font-black rounded-full uppercase tracking-widest">Complete</span>
                                             </td>
-                                            <td className={`p-6 text-right font-black text-xl ${tx.type === 'credit' ? 'text-success' : 'text-error'}`}>
-                                                {tx.type === 'credit' ? '+' : '-'}৳{tx.amount}
+                                            <td className={`p-6 text-right font-black text-xl ${tx.transaction_type === 'credit' ? 'text-success' : 'text-error'}`}>
+                                                {tx.transaction_type === 'credit' ? '+' : '-'}৳{tx.amount}
                                             </td>
                                         </tr>
                                     ))
